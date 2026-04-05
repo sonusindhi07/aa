@@ -1,0 +1,57 @@
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 60px;
+  background: rgba(246,244,239,0.88);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+.scrolled {
+  border-bottom-color: var(--border);
+  box-shadow: 0 4px 30px rgba(8,9,14,0.07);
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem; font-weight: 900;
+  letter-spacing: -0.5px; color: var(--ink);
+}
+.logo span { color: var(--gold); }
+.links {
+  display: flex; align-items: center; gap: 36px; list-style: none;
+}
+.links a {
+  font-size: 0.875rem; font-weight: 600;
+  color: var(--slate); letter-spacing: 0.2px;
+  transition: color var(--transition);
+  position: relative;
+}
+.links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 2px; background: var(--gold); border-radius: 2px;
+  transform: scaleX(0); transition: transform var(--transition);
+}
+.links a:hover { color: var(--ink); }
+.links a:hover::after { transform: scaleX(1); }
+.cta {
+  background: var(--ink); color: var(--white);
+  padding: 10px 22px; border-radius: var(--radius-sm);
+  font-size: 0.875rem; font-weight: 700; border: none;
+  transition: all var(--transition); letter-spacing: 0.2px;
+}
+.cta:hover { background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(8,9,14,0.18); }
+.burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+.burger span { width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: var(--transition); }
+@media (max-width: 768px) {
+  .nav { padding: 14px 20px; }
+  .burger { display: flex; }
+  .links {
+    display: none; position: fixed; inset: 0; top: 61px;
+    flex-direction: column; gap: 0; background: var(--white);
+    padding: 24px; align-items: flex-start;
+    border-top: 1px solid var(--border); z-index: 99;
+  }
+  .links.open { display: flex; }
+  .links li { width: 100%; border-bottom: 1px solid var(--border); }
+  .links a, .links button { display: block; padding: 16px 0; width: 100%; }
+}

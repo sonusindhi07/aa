@@ -1,0 +1,221 @@
+.panel {}
+
+.section {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child { border-bottom: none; }
+
+.sectionTitle {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+/* Swatches */
+.swatches {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.swatch:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.swatchActive {
+  border-color: var(--ink);
+  transform: scale(1.12);
+  box-shadow: 0 0 0 3px rgba(8,9,14,0.12), 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.swatchCheck {
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.themeLabel {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.themeLabel strong { color: var(--ink); }
+
+/* Fonts */
+.fontOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.fontBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--paper);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.fontBtn:hover {
+  border-color: var(--border-strong);
+  background: var(--white);
+}
+
+.fontBtnActive {
+  border-color: var(--accent-mid);
+  background: var(--accent-light);
+  box-shadow: 0 2px 8px rgba(37,99,235,0.12);
+}
+
+.fontName {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.fontSample {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--slate);
+  line-height: 1;
+}
+
+/* Layout */
+.layoutOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.layoutBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 10px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--paper);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.layoutBtn:hover {
+  border-color: var(--border-strong);
+  background: var(--white);
+}
+
+.layoutActive {
+  border-color: var(--accent-mid);
+  background: var(--accent-light);
+}
+
+.layoutIcon { font-size: 1.4rem; line-height: 1; }
+.layoutLabel { font-size: 0.78rem; font-weight: 800; color: var(--ink); }
+.layoutDesc { font-size: 0.68rem; color: var(--muted); }
+
+/* Theme Preview */
+.themePreview {
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.previewHeader {
+  padding: 14px 14px 10px;
+  transition: background 0.3s;
+}
+
+.previewName {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: white;
+}
+
+.previewTitle {
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 3px;
+  font-weight: 700;
+  transition: color 0.3s;
+}
+
+.previewBody {
+  padding: 12px 14px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.previewLine {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  transition: background 0.3s;
+}
+
+/* Tips */
+.tipBox {
+  background: var(--gold-pale);
+  border: 1.5px solid rgba(200,153,63,0.3);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+.tipTitle {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.tipList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tipList li {
+  font-size: 0.78rem;
+  color: var(--slate);
+  padding-left: 14px;
+  position: relative;
+}
+
+.tipList li::before {
+  content: '·';
+  position: absolute;
+  left: 4px;
+  color: var(--gold);
+  font-weight: 900;
+}

@@ -1,0 +1,55 @@
+.section { padding: 110px 60px; background: var(--white); }
+.inner { max-width: 1280px; margin: 0 auto; }
+.header { text-align: center; max-width: 580px; margin: 0 auto 72px; }
+.label { font-size: 0.72rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; color: var(--ink); }
+.h2 em { color: var(--gold); font-style: italic; }
+.sub { font-size: 1rem; color: var(--slate); line-height: 1.72; margin-top: 14px; }
+
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+.step {
+  text-align: center; padding: 0 24px;
+  position: relative;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.steps.visible .step { opacity: 1; transform: translateY(0); }
+
+.connector {
+  position: absolute; top: 28px; right: -50%;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--border));
+  z-index: 0;
+}
+.stepNum {
+  font-family: var(--font-display);
+  font-size: 0.75rem; font-weight: 900; letter-spacing: 2px;
+  color: var(--muted); margin-bottom: 12px;
+}
+.stepIcon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--paper-alt); border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; margin: 0 auto 20px;
+  position: relative; z-index: 1;
+  box-shadow: 0 0 0 6px var(--white), 0 0 0 8px var(--border);
+  transition: all 0.3s;
+}
+.step:hover .stepIcon { background: var(--ink); transform: scale(1.1); box-shadow: 0 0 0 6px var(--white), 0 12px 32px rgba(8,9,14,0.18); }
+.stepTitle { font-size: 1rem; font-weight: 800; color: var(--ink); margin-bottom: 10px; }
+.stepDesc { font-size: 0.875rem; color: var(--slate); line-height: 1.68; }
+
+.proofBar {
+  display: flex; justify-content: center; gap: 0; margin-top: 72px;
+  background: var(--ink); border-radius: var(--radius-lg); overflow: hidden;
+}
+.proofItem {
+  flex: 1; text-align: center; padding: 32px 20px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.proofItem:last-child { border-right: none; }
+.proofVal { font-family: var(--font-display); font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; }
+.proofLabel { font-size: 0.78rem; color: #606b80; font-weight: 600; margin-top: 6px; letter-spacing: 0.3px; }
+
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); gap: 40px; } .connector { display: none; } }
+@media (max-width: 640px) { .section { padding: 70px 20px; } .steps { grid-template-columns: 1fr; } .proofBar { flex-direction: column; } }

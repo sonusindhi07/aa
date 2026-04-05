@@ -1,0 +1,106 @@
+.builder {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-alt);
+  overflow: hidden;
+}
+
+.layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.previewPane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #ddd9d0;
+}
+
+.previewToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  background: rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+
+.previewLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.zoomControls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.zoomBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: white;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  color: var(--ink);
+}
+
+.zoomBtn:hover {
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
+}
+
+.zoomVal {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--slate);
+  min-width: 42px;
+  text-align: center;
+}
+
+.previewScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 30px 60px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  font-weight: 600;
+  z-index: 9999;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s ease;
+}
+
+.success { background: var(--ink); color: white; }
+.info    { background: var(--accent); color: white; }
+.error   { background: var(--danger); color: white; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
