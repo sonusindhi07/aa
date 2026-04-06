@@ -1,43 +1,74 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore, useResumeStore } from '../store'
 import {
-  FileText, Zap, Globe, Download, Star, ArrowRight, Check,
-  ChevronRight, Sparkles, Shield, Users, TrendingUp, Play,
-  Award, Clock, Linkedin, Upload
+  ArrowRight,
+  BadgeCheck,
+  Check,
+  CircleHelp,
+  Clock,
+  FileText,
+  Menu,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  X,
 } from 'lucide-react'
 
-const STATS = [
-  { number: '2M+', label: 'Resumes Created' },
-  { number: '98%', label: 'ATS Pass Rate' },
-  { number: '4.9★', label: 'User Rating' },
-  { number: '150+', label: 'Countries' },
+const METRICS = [
+  { value: '2.3M+', label: 'Resumes started' },
+  { value: '42%', label: 'More interview invites' },
+  { value: '18 min', label: 'Average first draft time' },
+  { value: '4.8 / 5', label: 'Average builder rating' },
 ]
 
-const FEATURES = [
-  { icon: Zap, title: 'AI-Powered Writing', desc: 'Let AI craft compelling bullet points, summaries, and cover letters tailored to your role.', color: '#4361ee', badge: 'AI' },
-  { icon: Globe, title: 'LinkedIn Import', desc: 'Import your LinkedIn profile in one click — no manual re-entry of your career history.', color: '#0077b5', badge: 'New' },
-  { icon: Download, title: 'PDF & Word Export', desc: 'Download pixel-perfect PDFs or editable Word documents. Print-ready, ATS-optimized.', color: '#06d6a0', badge: null },
-  { icon: Shield, title: 'ATS Optimized', desc: 'Every template is tested against major ATS systems. Beat the bots, get to interviews.', color: '#f72585', badge: null },
-  { icon: Sparkles, title: 'Dynamic Templates', desc: 'Universal Layout Engine adapts your content to any of our 9+ beautiful templates instantly.', color: '#7209b7', badge: 'Core' },
-  { icon: Upload, title: 'Upload & Enhance', desc: 'Have an existing resume? Upload it and let AI enhance, reformat, and optimize it.', color: '#ffd166', badge: null },
+const STEPS = [
+  {
+    title: 'Pick a role-ready template',
+    text: 'Start with modern layouts designed to stay readable for humans and applicant tracking software.',
+  },
+  {
+    title: 'Customize with guided prompts',
+    text: 'Rewrite bullets with stronger action words and measurable outcomes in one click.',
+  },
+  {
+    title: 'Download and apply today',
+    text: 'Export high-quality PDF versions and keep editing anytime as your career grows.',
+  },
 ]
 
-const TESTIMONIALS = [
-  { name: 'Priya Sharma', role: 'Software Engineer at Google', text: 'Got my dream job in 3 weeks using ResumeForge. The AI suggestions were incredibly accurate.', avatar: 'PS', stars: 5 },
-  { name: 'Marcus Johnson', role: 'Product Manager at Meta', text: 'Switched from a $300/hr consultant to ResumeForge. The results were honestly better.', avatar: 'MJ', stars: 5 },
-  { name: 'Aisha Patel', role: 'Data Scientist at Amazon', text: 'LinkedIn import + AI rewrite took 10 minutes. I had 8 interviews in the first week.', avatar: 'AP', stars: 5 },
+const BENEFITS = [
+  'HR-tested sections and formatting',
+  'Smart wording suggestions by role',
+  'Built-in spelling and clarity checks',
+  'Shareable link and print-friendly exports',
+]
+
+const FAQ = [
+  {
+    q: 'Can I build a resume for free?',
+    a: 'Yes. You can create and edit your resume for free, then decide when you want premium exports and advanced tools.',
+  },
+  {
+    q: 'Will it work for internships and first jobs?',
+    a: 'Absolutely. The builder includes student-friendly examples and entry-level phrasing tips for first-time applicants.',
+  },
+  {
+    q: 'Can I edit my resume later?',
+    a: 'Yes, all resumes stay saved in your dashboard so you can quickly tailor versions for each role.',
+  },
 ]
 
 export default function LandingPage() {
   const { isAuthenticated } = useAuthStore()
   const { createResume } = useResumeStore()
   const navigate = useNavigate()
-  const [heroTab, setHeroTab] = useState(0)
+
   const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20)
+    const handleScroll = () => setScrolled(window.scrollY > 14)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -46,204 +77,179 @@ export default function LandingPage() {
     if (isAuthenticated) {
       const id = createResume('My Resume')
       navigate(`/builder/${id}`)
-    } else {
-      navigate('/auth')
+      return
     }
+    navigate('/auth')
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'white', fontFamily:'DM Sans' }}>
-      {/* Nav */}
-      <nav style={{
-        position:'fixed', top:0, left:0, right:0, zIndex:50,
-        background: scrolled ? 'rgba(255,255,255,0.95)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid #e2e8f0' : 'none',
-        transition:'all 0.3s',
-        padding:'0 5%',
-      }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height:'64px', maxWidth:'1200px', margin:'0 auto' }}>
-          <Link to="/" style={{ textDecoration:'none', display:'flex', alignItems:'center', gap:'8px' }}>
-            <div style={{ width:32, height:32, background:'linear-gradient(135deg, #4361ee, #f72585)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center' }}>
-              <FileText size={18} color="white" />
-            </div>
-            <span style={{ fontFamily:'Playfair Display', fontSize:'18px', fontWeight:700, color:'#1e293b' }}>ResumeForge</span>
+    <div className="lp-page">
+      <nav className={`lp-nav ${scrolled ? 'lp-nav-scrolled' : ''}`}>
+        <div className="lp-nav-inner">
+          <Link to="/" className="lp-brand" onClick={() => setMobileMenuOpen(false)}>
+            <span className="lp-brand-icon"><FileText size={16} color="white" /></span>
+            <span>ResumeForge</span>
           </Link>
-          <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-            <Link to="/templates" className="btn-ghost" style={{ textDecoration:'none' }}>Templates</Link>
-            <Link to="/pricing" className="btn-ghost" style={{ textDecoration:'none' }}>Pricing</Link>
-            {isAuthenticated ? (
-              <Link to="/dashboard" className="btn-primary" style={{ textDecoration:'none' }}>Dashboard <ArrowRight size={14} /></Link>
-            ) : (
-              <>
-                <Link to="/auth" className="btn-ghost" style={{ textDecoration:'none' }}>Sign In</Link>
-                <button className="btn-primary" onClick={handleStart}>Get Started Free <ArrowRight size={14} /></button>
-              </>
-            )}
+
+          <button
+            className="lp-menu-btn"
+            onClick={() => setMobileMenuOpen((s) => !s)}
+            aria-label="Toggle navigation"
+          >
+            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+
+          <div className={`lp-nav-links ${mobileMenuOpen ? 'open' : ''}`}>
+            <Link to="/templates" className="btn-ghost" onClick={() => setMobileMenuOpen(false)}>Templates</Link>
+            <Link to="/pricing" className="btn-ghost" onClick={() => setMobileMenuOpen(false)}>Pricing</Link>
+            <Link to="/auth" className="btn-ghost" onClick={() => setMobileMenuOpen(false)}>Sign in</Link>
+            <button className="btn-primary" onClick={handleStart}>Build now <ArrowRight size={14} /></button>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="hero-gradient" style={{ minHeight:'100vh', display:'flex', alignItems:'center', paddingTop:'80px' }}>
-        <div style={{ maxWidth:'1200px', margin:'0 auto', padding:'60px 5%', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'60px', alignItems:'center' }}>
+      <section className="lp-hero hero-gradient">
+        <div className="lp-container lp-hero-grid">
           <div>
-            <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', background:'#e0eaff', color:'#4361ee', padding:'6px 14px', borderRadius:'99px', fontSize:'13px', fontWeight:600, marginBottom:'24px' }}>
-              <Sparkles size={14} /> AI-Powered Resume Builder
-            </div>
-            <h1 style={{ fontFamily:'Playfair Display', fontSize:'clamp(36px, 5vw, 58px)', fontWeight:700, lineHeight:1.1, color:'#1e293b', margin:'0 0 20px' }}>
-              Build Resumes That<br />
-              <span className="gradient-text">Land Interviews</span>
-            </h1>
-            <p style={{ fontSize:'18px', color:'#64748b', lineHeight:1.7, marginBottom:'32px', maxWidth:'480px' }}>
-              Create stunning, ATS-optimized resumes in minutes using AI. Import from LinkedIn, choose from 9+ templates, and download in PDF or Word.
+            <p className="lp-eyebrow"><Sparkles size={14} /> Resume builder for modern job seekers</p>
+            <h1 className="lp-title">Create a job-winning resume that feels made for you.</h1>
+            <p className="lp-subtitle">
+              Skip blank pages and formatting stress. Build a polished resume with guided writing help,
+              recruiter-inspired sections, and clean templates that look great on every screen.
             </p>
-            <div style={{ display:'flex', gap:'12px', flexWrap:'wrap', marginBottom:'40px' }}>
-              <button className="btn-primary" onClick={handleStart} style={{ fontSize:'16px', padding:'14px 28px' }}>
-                Build My Resume Free <ArrowRight size={16} />
+
+            <div className="lp-actions">
+              <button className="btn-primary lp-btn-large" onClick={handleStart}>
+                Create my resume <ArrowRight size={16} />
               </button>
-              <Link to="/templates" className="btn-secondary" style={{ fontSize:'16px', padding:'14px 28px', textDecoration:'none' }}>
-                <Play size={16} /> View Templates
-              </Link>
+              <Link to="/templates" className="btn-secondary lp-btn-large">Browse templates</Link>
             </div>
-            <div style={{ display:'flex', gap:'20px', flexWrap:'wrap' }}>
-              {['No credit card', 'ATS optimized', 'PDF & Word export'].map(f => (
-                <span key={f} style={{ display:'flex', alignItems:'center', gap:'6px', fontSize:'13px', color:'#64748b' }}>
-                  <Check size={14} color="#06d6a0" strokeWidth={3} /> {f}
-                </span>
+
+            <div className="lp-bullets">
+              {['No design skills needed', 'Optimized for ATS readability', 'Resume saved automatically'].map((item) => (
+                <span key={item}><Check size={14} color="#06d6a0" strokeWidth={3} /> {item}</span>
               ))}
             </div>
           </div>
-          {/* Hero preview card */}
-          <div style={{ position:'relative' }}>
-            <div className="forge-card" style={{ padding:'32px', position:'relative', overflow:'hidden' }}>
-              <div style={{ position:'absolute', top:-20, right:-20, width:120, height:120, borderRadius:'50%', background:'linear-gradient(135deg, #4361ee22, #f7258522)', filter:'blur(20px)' }} />
-              <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'20px' }}>
-                <div style={{ width:48, height:48, borderRadius:'50%', background:'linear-gradient(135deg, #4361ee, #7209b7)', display:'flex', alignItems:'center', justifyContent:'center', color:'white', fontWeight:700 }}>JD</div>
-                <div>
-                  <div style={{ fontFamily:'Playfair Display', fontSize:'16px', fontWeight:700, color:'#1e293b' }}>Jane Doe</div>
-                  <div style={{ fontSize:'12px', color:'#4361ee', fontWeight:500 }}>Senior Product Manager</div>
-                </div>
-                <div style={{ marginLeft:'auto' }}>
-                  <span className="badge badge-ai">AI Enhanced</span>
-                </div>
-              </div>
-              {/* Mini resume preview */}
-              {[
-                { label: 'Summary', content: 'Results-driven PM with 8+ years building B2B SaaS products...', color:'#4361ee' },
-                { label: 'Experience', content: 'Meta · Senior PM · 2021–Present\n• Led 0→1 product launch reaching 2M users', color:'#7209b7' },
-                { label: 'Skills', content: 'Product Strategy, Data Analytics, Agile, Figma, SQL', color:'#06d6a0' },
-              ].map(sec => (
-                <div key={sec.label} style={{ marginBottom:'12px', padding:'10px 12px', background:'#f8faff', borderRadius:'8px', borderLeft:`3px solid ${sec.color}` }}>
-                  <div style={{ fontSize:'10px', fontWeight:700, color: sec.color, textTransform:'uppercase', letterSpacing:'0.05em', marginBottom:'4px' }}>{sec.label}</div>
-                  <div style={{ fontSize:'12px', color:'#374151', lineHeight:1.5, whiteSpace:'pre-line' }}>{sec.content}</div>
-                </div>
-              ))}
-              <div style={{ display:'flex', gap:'8px', marginTop:'16px' }}>
-                <button style={{ flex:1, background:'#4361ee', color:'white', border:'none', borderRadius:'8px', padding:'8px', fontSize:'12px', fontWeight:600, cursor:'pointer' }}>
-                  Download PDF
-                </button>
-                <button style={{ flex:1, background:'#f0f4ff', color:'#4361ee', border:'none', borderRadius:'8px', padding:'8px', fontSize:'12px', fontWeight:600, cursor:'pointer' }}>
-                  Word Export
-                </button>
-              </div>
-            </div>
-            {/* Floating badges */}
-            <div style={{ position:'absolute', top:-12, right:-12, background:'white', borderRadius:'10px', padding:'8px 12px', boxShadow:'0 8px 24px rgba(0,0,0,0.1)', fontSize:'12px', fontWeight:600, color:'#1e293b', display:'flex', alignItems:'center', gap:'6px' }}>
-              <Zap size={12} color="#f59e0b" fill="#f59e0b" /> AI Writing Active
-            </div>
-            <div style={{ position:'absolute', bottom:-8, left:-8, background:'white', borderRadius:'10px', padding:'8px 12px', boxShadow:'0 8px 24px rgba(0,0,0,0.1)', fontSize:'12px', fontWeight:600, color:'#1e293b', display:'flex', alignItems:'center', gap:'6px' }}>
-              <Check size={12} color="#06d6a0" strokeWidth={3} /> ATS Score: 97/100
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Stats */}
-      <section style={{ background:'#1e293b', padding:'40px 5%' }}>
-        <div style={{ maxWidth:'1200px', margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'20px', textAlign:'center' }}>
-          {STATS.map(s => (
-            <div key={s.label}>
-              <div style={{ fontSize:'36px', fontWeight:700, color:'white', fontFamily:'Playfair Display' }}>{s.number}</div>
-              <div style={{ fontSize:'14px', color:'#94a3b8', marginTop:'4px' }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Features */}
-      <section style={{ padding:'80px 5%', maxWidth:'1200px', margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:'56px' }}>
-          <h2 style={{ fontFamily:'Playfair Display', fontSize:'36px', fontWeight:700, color:'#1e293b', marginBottom:'12px' }}>Everything You Need to Land the Job</h2>
-          <p style={{ fontSize:'18px', color:'#64748b', maxWidth:'560px', margin:'0 auto' }}>From AI writing to LinkedIn import — all the tools in one beautiful platform.</p>
-        </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'24px' }}>
-          {FEATURES.map(f => (
-            <div key={f.title} className="forge-card" style={{ padding:'28px', transition:'transform 0.2s, box-shadow 0.2s', cursor:'default' }}
-              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow='0 12px 40px rgba(67,97,238,0.12)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='' }}>
-              <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:'16px' }}>
-                <div style={{ width:44, height:44, borderRadius:'10px', background:`${f.color}18`, display:'flex', alignItems:'center', justifyContent:'center' }}>
-                  <f.icon size={20} color={f.color} />
-                </div>
-                {f.badge && <span className={`badge badge-${f.badge === 'AI' ? 'ai' : f.badge === 'New' ? 'new' : 'pro'}`}>{f.badge}</span>}
+          <div className="forge-card lp-preview-card">
+            <div className="lp-preview-header">
+              <div>
+                <strong>Project Coordinator Resume</strong>
+                <p>Tailored for Operations Specialist</p>
               </div>
-              <h3 style={{ fontSize:'18px', fontWeight:700, color:'#1e293b', marginBottom:'8px' }}>{f.title}</h3>
-              <p style={{ fontSize:'14px', color:'#64748b', lineHeight:1.6, margin:0 }}>{f.desc}</p>
+              <span className="badge badge-ai">Quality score 94</span>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* Testimonials */}
-      <section style={{ background:'#f8faff', padding:'80px 5%' }}>
-        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-          <div style={{ textAlign:'center', marginBottom:'48px' }}>
-            <h2 style={{ fontFamily:'Playfair Display', fontSize:'36px', fontWeight:700, color:'#1e293b', marginBottom:'12px' }}>Loved by Job Seekers Worldwide</h2>
-          </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))', gap:'24px' }}>
-            {TESTIMONIALS.map(t => (
-              <div key={t.name} className="forge-card" style={{ padding:'28px' }}>
-                <div style={{ display:'flex', gap:'2px', marginBottom:'16px' }}>
-                  {Array(t.stars).fill(0).map((_, i) => <Star key={i} size={14} color="#f59e0b" fill="#f59e0b" />)}
-                </div>
-                <p style={{ fontSize:'15px', color:'#374151', lineHeight:1.7, marginBottom:'20px' }}>"{t.text}"</p>
-                <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-                  <div style={{ width:36, height:36, borderRadius:'50%', background:'linear-gradient(135deg, #4361ee, #f72585)', display:'flex', alignItems:'center', justifyContent:'center', color:'white', fontSize:'12px', fontWeight:700 }}>{t.avatar}</div>
-                  <div>
-                    <div style={{ fontWeight:700, fontSize:'14px', color:'#1e293b' }}>{t.name}</div>
-                    <div style={{ fontSize:'12px', color:'#64748b' }}>{t.role}</div>
-                  </div>
-                </div>
-              </div>
+            <div className="lp-score-row">
+              <span><BadgeCheck size={14} color="#4361ee" /> Strong action verbs</span>
+              <span><ShieldCheck size={14} color="#4361ee" /> ATS-safe formatting</span>
+              <span><Clock size={14} color="#4361ee" /> 2 min to finalize</span>
+            </div>
+
+            {[
+              'Coordinated a 12-member cross-functional rollout and reduced onboarding time by 28%.',
+              'Built weekly KPI reporting dashboards used by operations and leadership teams.',
+              'Improved vendor response SLA from 72 hours to 24 hours through workflow changes.',
+            ].map((line) => (
+              <div key={line} className="lp-preview-line">{line}</div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section style={{ padding:'80px 5%', textAlign:'center', background:'linear-gradient(135deg, #4361ee, #7209b7)', color:'white' }}>
-        <h2 style={{ fontFamily:'Playfair Display', fontSize:'40px', fontWeight:700, marginBottom:'16px' }}>Ready to Build Your Dream Resume?</h2>
-        <p style={{ fontSize:'18px', opacity:0.85, marginBottom:'32px', maxWidth:'480px', margin:'0 auto 32px' }}>Join 2 million professionals. Start free, upgrade when you're ready.</p>
-        <button className="btn-primary" onClick={handleStart} style={{ background:'white', color:'#4361ee', fontSize:'16px', padding:'14px 32px' }}>
-          Start Building Free <ArrowRight size={16} />
-        </button>
-      </section>
-
-      {/* Footer */}
-      <footer style={{ background:'#1e293b', color:'#94a3b8', padding:'40px 5%', textAlign:'center', fontSize:'14px' }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'8px', marginBottom:'16px' }}>
-          <div style={{ width:24, height:24, background:'linear-gradient(135deg, #4361ee, #f72585)', borderRadius:'6px', display:'flex', alignItems:'center', justifyContent:'center' }}>
-            <FileText size={12} color="white" />
-          </div>
-          <span style={{ fontFamily:'Playfair Display', color:'white', fontWeight:700 }}>ResumeForge</span>
-        </div>
-        <div style={{ display:'flex', justifyContent:'center', gap:'24px', marginBottom:'16px', flexWrap:'wrap' }}>
-          {['Templates', 'Pricing', 'Privacy', 'Terms', 'Contact'].map(l => (
-            <a key={l} href="#" style={{ color:'#94a3b8', textDecoration:'none' }}>{l}</a>
+      <section className="lp-metrics">
+        <div className="lp-container lp-metric-grid">
+          {METRICS.map((metric) => (
+            <article key={metric.label}>
+              <h3>{metric.value}</h3>
+              <p>{metric.label}</p>
+            </article>
           ))}
         </div>
-        <div>© 2025 ResumeForge. All rights reserved.</div>
+      </section>
+
+      <section className="lp-section">
+        <div className="lp-container">
+          <header className="lp-section-head">
+            <h2>How ResumeForge helps you move faster</h2>
+            <p>From first draft to final export, every step is simple and mobile-friendly.</p>
+          </header>
+
+          <div className="lp-steps-grid">
+            {STEPS.map((step, index) => (
+              <article className="forge-card lp-step-card" key={step.title}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="lp-section lp-alt-section">
+        <div className="lp-container lp-split">
+          <div>
+            <h2>Built to be clear, confident, and interview-ready</h2>
+            <p>
+              Our editor guides you with practical suggestions so you can focus on your achievements,
+              not fighting layout issues.
+            </p>
+            <ul className="lp-benefit-list">
+              {BENEFITS.map((benefit) => (
+                <li key={benefit}><Check size={15} color="#06d6a0" strokeWidth={3} /> {benefit}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="forge-card lp-quote-card">
+            <div className="lp-stars">{Array.from({ length: 5 }).map((_, i) => <Star size={14} key={i} color="#f59e0b" fill="#f59e0b" />)}</div>
+            <p>
+              “I updated my resume in one evening and got two recruiter calls that same week.
+              The writing prompts made my experience sound stronger without exaggerating.”
+            </p>
+            <strong>— Jordan T., Customer Success Lead</strong>
+          </div>
+        </div>
+      </section>
+
+      <section className="lp-section">
+        <div className="lp-container">
+          <header className="lp-section-head">
+            <h2>Frequently asked questions</h2>
+          </header>
+
+          <div className="lp-faq-grid">
+            {FAQ.map((item) => (
+              <article key={item.q} className="forge-card lp-faq-item">
+                <h3><CircleHelp size={16} /> {item.q}</h3>
+                <p>{item.a}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="lp-cta">
+        <div className="lp-container lp-cta-box">
+          <h2>Ready to apply with more confidence?</h2>
+          <p>Start your resume now and tailor each version in minutes.</p>
+          <button className="btn-primary lp-btn-large" onClick={handleStart}>
+            Start for free <ArrowRight size={16} />
+          </button>
+        </div>
+      </section>
+
+      <footer className="lp-footer">
+        <div className="lp-container lp-footer-inner">
+          <p>© 2026 ResumeForge. Built for smarter job searching.</p>
+          <div>
+            <Link to="/templates">Templates</Link>
+            <Link to="/pricing">Pricing</Link>
+            <a href="#top">Back to top</a>
+          </div>
+        </div>
       </footer>
     </div>
   )
